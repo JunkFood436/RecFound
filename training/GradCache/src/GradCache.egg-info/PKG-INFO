@@ -1,0 +1,13 @@
+Metadata-Version: 2.4
+Name: GradCache
+Version: 0.0.1
+Home-page: https://github.com/luyug/GradCache
+Author: Luyu Gao
+Author-email: luyug@cs.cmu.edu
+License: Apache-2.0
+License-File: LICENSE
+Dynamic: author
+Dynamic: author-email
+Dynamic: home-page
+Dynamic: license
+Dynamic: license-file
