@@ -20,7 +20,7 @@ from peft import PeftModel
 from grad_cache import GradCache
 
 from utils.common_utils import generate_task_id, TASK2ID, ID2TASK, sample_batch
-from utils.loss_utils import loss_func_mft, CoBaStatus, load_balancing_loss_func, save_df
+from utils.loss_utils import CoBaStatus
 
 if is_datasets_available():
     import datasets
@@ -450,14 +450,13 @@ class GradCacheTrainer(Trainer):
                 self.coba_tau,
                 self.coba_update_interval,
                 self.coba_sample_valid_num,
+                args.gradient_accumulation_steps,
                 self.get_eval_dataloader(),
             )
             coba_status.valid_task_loss_begining = self.evaluate(self.model, step=256)
         else:
             coba_status = None
 
-        coba_weight_log_dir = os.path.join(self._get_output_dir(trial=trial),"weight_log.txt")
-        coba_weight_log_list = []
 
         # Train!
         logger.info("***** Running training *****")
@@ -661,7 +660,6 @@ class GradCacheTrainer(Trainer):
                             alpha = 1
                             per_task_weight = alpha * per_task_weight + (1 - alpha) * coba_status.log_per_task_weight
                             coba_status.log_per_task_weight = per_task_weight
-                            coba_weight_log_list.append(coba_status.log_per_task_weight * coba_status.log_per_task_weight.shape[0] / 2)
 
                     if self.args.coba_batch_rate < 1:
                         inputs = sample_batch(inputs, per_task_weight, self.args.coba_batch_rate)
@@ -813,11 +811,8 @@ class GradCacheTrainer(Trainer):
                             #loss_emb = loss_emb.detach()
                         else:
                             # This is not compatible w/ DeepSpeed / Megatron-LM / loss scaling
-                            # print(inputs["emb_task"])
                             inputs["query"]["emb_task"]=torch.tensor(inputs["emb_task"]).to(inputs["query"]["input_ids"].device)
                             inputs["passage"]["emb_task"]=torch.tensor([item for item in inputs["emb_task"] for _ in range(2)]).to(inputs["passage"]["input_ids"].device)
-                            # inputs["query"]["loss_weight"]=per_task_weight
-                            # inputs["passage"]["loss_weight"]=per_task_weight
                             loss_emb = gc(inputs["query"], inputs["passage"], no_sync_except_last=no_sync_except_last,loss_weight=per_task_weight,emb_task=torch.tensor(inputs["emb_task"]))
 
 
@@ -954,11 +949,7 @@ class GradCacheTrainer(Trainer):
             # Clean the state at the end of training
             delattr(self, "_past")
 
-        with open(coba_weight_log_dir, 'w') as f:
-            for w in coba_weight_log_list:
-                f.write(str(w)+'\n')
                 
-        save_df(self._get_output_dir(trial=trial))
 
         logger.info("\n\nTraining completed. Do not forget to share your model on huggingface.co/models =)\n\n")
         if args.load_best_model_at_end and self.state.best_model_checkpoint is not None:

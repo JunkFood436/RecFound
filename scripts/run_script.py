@@ -20,8 +20,7 @@ args = parse()
 TARGET_PY_FILE = f'{args.root}/training/run.py'
 os.system(f'cd {args.root}')
 
-# per_device_eval_batch_size can only be set to 1
-# 当前版本的代码在训练mode是embedding的时候，可能会有loss_weight时间轴没对齐的问题，可能需要修改grad_cache中传入loss_weight参数的方法
+# per_device_eval_batch_size can only be set to 1 
 
 command = [
     "torchrun", 
@@ -51,7 +50,6 @@ command = [
     "--query_max_len", "256",
     "--passage_max_len", "2048",
     "--mode", "unified",
-    "--report_to", "tensorboard",
     "--logging_dir", args.train_url,
     "--logging_strategy", "steps",
     "--logging_steps", "1",

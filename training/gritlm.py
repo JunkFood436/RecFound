@@ -143,9 +143,6 @@ class GritLM(torch.nn.Module):
             if task_types is not None:
                 inputs['task_types'] = self.task_embedding(torch.tensor(task_types)).to(self.device)
                 inputs['task_index'] = torch.zeros(inputs['task_types'].shape[0], 1).to(self.device)
-            # print(self.embedding_attr)
-            # print(getattr(self.model, self.embedding_attr))
-            # print(self.model)
             if isinstance(self.model, PeftModel):
                 outputs = (
                 getattr(self.model.base_model.model, self.embedding_attr) if self.embedding_attr else self.model.base_model.model

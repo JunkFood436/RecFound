@@ -38,7 +38,6 @@ def parse_args():
     return parser.parse_args()
 
 def run_command(cmd, verbose=False):
-    """执行命令并返回结果"""
     if verbose:
         print(f"Running: {' '.join(cmd)}")
     
@@ -57,7 +56,6 @@ def run_command(cmd, verbose=False):
     return True
 
 def run_inference(args, script_dir, output_dir):
-    """运行推理"""
     print("=" * 50)
     print("Step 1: Running Inference...")
     print("=" * 50)
@@ -86,7 +84,6 @@ def run_inference(args, script_dir, output_dir):
     return True
 
 def run_evaluation(args, script_dir, output_dir):
-    """运行评测"""
     print("=" * 50)
     print("Step 2: Running Evaluation...")
     print("=" * 50)

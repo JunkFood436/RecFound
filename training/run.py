@@ -2,8 +2,7 @@ import logging
 import json
 import multiprocessing
 import os
-os.environ["WANDB_MODE"] = "disabled"
-os.environ["TOKENIZERS_PARALLELISM"] = "false"
+# os.environ["TOKENIZERS_PARALLELISM"] = "false"
 from pathlib import Path
 import random
 
