@@ -66,7 +66,11 @@ python merge/merge_moe.py
 ```
 ### Dataset
 
-The Dataset is available in `https://drive.google.com/file/d/10gg8cjqpDku8NBU9zXeS9-LvxuK3CQDP/view?usp=sharing`.
+The Dataset is available in `https://huggingface.co/datasets/Anonqwq/RecFound`.
+
+### Model
+
+The TMoLE model checkpoint is available in `https://huggingface.co/Anonqwq/RecFound-7B`. You can load the module on Mistral-7B-v0.3-Instruct after getting ready for the environment.
 
 ## Acknowledgments
 
