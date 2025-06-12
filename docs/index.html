@@ -1,0 +1,328 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <!-- Meta tags for social media banners, these should be filled in appropriatly as they are your "business card" -->
+  <!-- Replace the content tag with appropriate information -->
+  <meta name="description" content="DESCRIPTION META TAG">
+  <meta property="og:title" content="SOCIAL MEDIA TITLE TAG"/>
+  <meta property="og:description" content="SOCIAL MEDIA DESCRIPTION TAG TAG"/>
+  <meta property="og:url" content="URL OF THE WEBSITE"/>
+  <!-- Path to banner image, should be in the path listed below. Optimal dimenssions are 1200X630-->
+  <meta property="og:image" content="static/image/your_banner_image.png" />
+  <meta property="og:image:width" content="1200"/>
+  <meta property="og:image:height" content="630"/>
+
+
+  <meta name="twitter:title" content="TWITTER BANNER TITLE META TAG">
+  <meta name="twitter:description" content="TWITTER BANNER DESCRIPTION META TAG">
+  <!-- Path to banner image, should be in the path listed below. Optimal dimenssions are 1200X600-->
+  <meta name="twitter:image" content="static/images/your_twitter_banner_image.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <!-- Keywords for your paper to be indexed by-->
+  <meta name="keywords" content="KEYWORDS SHOULD BE PLACED HERE">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+  <title>RecFound</title>
+  <link rel="icon" type="image/x-icon" href="static/images/page.ico">
+  <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro"
+  rel="stylesheet">
+
+  <link rel="stylesheet" href="static/css/bulma.min.css">
+  <link rel="stylesheet" href="static/css/bulma-carousel.min.css">
+  <link rel="stylesheet" href="static/css/bulma-slider.min.css">
+  <link rel="stylesheet" href="static/css/fontawesome.all.min.css">
+  <link rel="stylesheet"
+  href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+  <link rel="stylesheet" href="static/css/index.css">
+  <style>
+#exp-carousel {
+  max-width: 1000px; 
+  margin: 0 auto;  
+}
+
+.carousel .item {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 600px;
+  overflow: hidden;
+  background-color: #f9f9f9;
+  padding: 1em;
+  border-radius: 8px;
+}
+
+.carousel .item img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+}
+
+.carousel .subtitle {
+  margin-top: 1rem;
+  font-size: 1rem;
+  text-align: center;
+}
+
+</style>
+
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://documentcloud.adobe.com/view-sdk/main.js"></script>
+  <script defer src="static/js/fontawesome.all.min.js"></script>
+  <script src="static/js/bulma-carousel.min.js"></script>
+  <script src="static/js/bulma-slider.min.js"></script>
+  <script src="static/js/index.js"></script>
+</head>
+<body>
+
+
+  <section class="hero">
+    <div class="hero-body">
+      <div class="container is-max-desktop">
+        <div class="columns is-centered">
+          <div class="column has-text-centered">
+            <h1 class="title is-1 publication-title">RecFound: Generative Representational Learning of Foundation Models for Recommendation</h1>
+            <div class="is-size-5 publication-authors">
+              <!-- Paper authors -->
+              <span class="author-block">
+                <a>Zheli Zhou</a><sup>1</sup>,</span>
+              <span class="author-block">
+                <a>Chenxu Zhu</a><sup>2</sup>,</span>
+              <span class="author-block">
+                <a href="https://chiangel.github.io/" target="_blank">Jianghao Lin</a><sup>1</sup><sup>&#9993</sup>,</span>
+              <span class="author-block">
+                <a>Bo Chen</a><sup>2</sup>,</span>
+              <span class="author-block">
+                <a>Ruiming Tang</a><sup>2</sup>,</span>
+              <span class="author-block">
+                <a href="https://wnzhang.net/" target="_blank">Weinan Zhang</a><sup>1</sup><sup>&#9993</sup>,</span>
+              <span class="author-block">
+                <a href="https://www.cs.sjtu.edu.cn/en/PeopleDetail.aspx?id=75" target="_blank">Yong Yu</a><sup>1</sup></span>
+
+                  </div>
+                  <div class="is-size-5 publication-authors">
+                    <span class="author-block"><sup>1</sup>Shanghai Jiao Tong University,<sup>2</sup>Huawei Noah's Ark Lab</span>
+                    <span class="corresponding-author"><small><br><sup>&#9993</sup>Co-corresponding Authors</small></span>
+                  </div>
+
+                   <div class="column has-text-centered">
+                    <div class="publication-links">
+                         <!-- Arxiv PDF link -->
+                      <span class="link-block">
+                        <a href="https://arxiv.org/pdf/2506.11111" target="_blank"
+                        class="external-link button is-normal is-rounded is-dark">
+                        <span class="icon">
+                          <i class="fas fa-file-pdf"></i>
+                        </span>
+                        <span>Paper</span>
+                      </a>
+                    </span>
+
+
+                        <!-- Github link -->
+                        <span class="link-block">
+                          <a href="https://github.com/JunkFood436/RecFound" target="_blank"
+                          class="external-link button is-normal is-rounded is-dark">
+                          <span class="icon">
+                            <i class="fab fa-github"></i>
+                          </span>
+                          <span>Code</span>
+                        </a>
+                      </span>
+
+                      <!-- ArXiv abstract Link -->
+                      <span class="link-block">
+                        <a href="http://arxiv.org/abs/2506.11111" target="_blank"
+                        class="external-link button is-normal is-rounded is-dark">
+                        <span class="icon">
+                          <i class="ai ai-arxiv"></i>
+                        </span>
+                        <span>arXiv</span>
+                      </a>
+                    </span>
+                      <!-- Dataset link -->
+                    <span class="link-block">
+                      <a href="https://huggingface.co/datasets/Anonqwq/RecFound" target="_blank"
+                      class="external-link button is-normal is-rounded is-dark">
+                      <span class="icon">
+                        <img src="https://huggingface.co/front/assets/huggingface_logo-noborder.svg" alt="HF" style="height:1em; vertical-align:middle;">
+                      </span>
+                      <span>Dataset</span>
+                    </a>
+                  </span>
+                    <!-- Model Link -->
+                  <span class="link-block">
+                    <a href="https://huggingface.co/Anonqwq/RecFound-7B" target="_blank"
+                    class="external-link button is-normal is-rounded is-dark">
+                    <span class="icon">
+                    <img src="https://huggingface.co/front/assets/huggingface_logo-noborder.svg" alt="HF" style="height:1em; vertical-align:middle;">
+                  </span>
+                  <span>Model</span>
+                  </a>
+                </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Paper abstract -->
+<section class="section hero is-light">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-four-fifths">
+        <h2 class="title is-3">Abstract</h2>
+        <div class="content has-text-justified">
+          <p>
+            Developing a single foundation model with the capability to excel across diverse tasks has been a long-standing objective in the field of artificial intelligence. As the wave of general-purpose foundation models sweeps across various domains, their influence has significantly extended to the field of recommendation systems. While recent efforts have explored recommendation foundation models for various generative tasks, they often overlook crucial embedding tasks and struggle with the complexities of multi-task learning, including knowledge sharing & conflict resolution, and convergence speed inconsistencies. To address these limitations, we introduce RecFound, a generative representational learning framework for recommendation foundation models. We construct the first comprehensive dataset for recommendation foundation models covering both generative and embedding tasks across diverse scenarios. Based on this dataset, we propose a novel multi-task training scheme featuring a Task-wise Mixture of Low-rank Experts (TMoLE) to handle knowledge sharing & conflict, a Step-wise Convergence-oriented Sample Scheduler (S2Sched) to address inconsistent convergence, and a Model Merge module to balance the performance across tasks. Experiments demonstrate that RecFound achieves state-of-the-art performance across various recommendation tasks, outperforming existing baselines.          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- End paper abstract -->
+
+<section class="section">
+    <div class="container">
+      <div class="columns is-centered has-text-centered">
+        <div class="column is-four-fifths">
+          <h2 class="title is-3">Dataset</h2>
+          <div class="content has-text-justified">
+            <a href="https://arxiv.org/pdf/2506.11111" target="_blank" rel="external">
+              <img class="center-block org-banner" src="static/images/dataset.png">
+            </a>
+            <p>
+              Table 1: Statistics of the RecFound dataset, which includes a variety of tasks and scenarios for recommendation foundation models. Our dataset covers both embedding and generative tasks for recommendation foundation models. The embedding tasks include: (1) User2Item (U2I), which encodes user behavior sequences for personalized retrieval; (2) Query2Item (Q2I), which embeds user queries for precise matching; and (3) Item2Item (I2I), which finds similar items based on item descriptions—all primarily built on the Amazon Reviews and Shopping Queries datasets. The generative tasks span 10 subtasks across three categories: (a) General NLP, including query rewriting, attribute extraction, and answer generation; (b) User Understanding, including sequential recommendation, sentiment analysis, user profiling, and answerability prediction; and (c) Item Understanding, including product relevance prediction, cross-platform matching, and item profiling. These tasks are constructed from Amazon Reviews, MovieLens, AmazonQA, Amazon-Google Products, and related datasets.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+<section class="section">
+    <div class="container">
+      <div class="columns is-centered has-text-centered">
+        <div class="column is-four-fifths">
+          <h2 class="title is-3">Methodology</h2>
+          <div class="content has-text-justified">
+            <a href="https://arxiv.org/pdf/2506.11111" target="_blank" rel="external">
+              <img class="center-block org-banner" src="static/images/method.png">
+            </a>
+            <p>
+              Figure 1: Overview of RecFound, a generative representational learning framework for recommendation foundation models. RecFound is designed to handle both generative and embedding tasks, addressing the challenges of knowledge sharing & conflict resolution, and convergence speed inconsistencies. It consists of three main components: (1) Task-wise Mixture of Low-rank Experts (TMoLE) for knowledge sharing & conflict resolution; (2) Step-wise Convergence-oriented Sample Scheduler (S2Sched) for addressing inconsistent convergence; and (3) Model Merge module to balance performance across tasks.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Image carousel -->
+<section class="experiment">
+    <div class="columns is-centered has-text-centered">
+  <div class="hero-body">
+      <h2 class="title is-3">Experiments</h2>
+    <div class="container">
+      <div id="exp-carousel" class="carousel results-carousel">
+       <div class="item">
+        <!-- Your image here -->
+         <a href="https://arxiv.org/pdf/2506.11111" target="_blank" rel="external">
+        <img src="static/images/exp1.png" alt="MY ALT TEXT"/>
+         </a>
+        <h2 class="subtitle has-text-centered">
+          Table 2: Performance on generative tasks. Average Rank is obtained by calculating the average of the model's rankings on each task. The smaller this value is, the better the comprehensive effect of the model will be. For each task, the best result is in bold, and the second-best result is underlined.
+        </h2>
+      </div>
+      <div class="item">
+        <!-- Your image here -->
+        <a href="https://arxiv.org/pdf/2506.11111" target="_blank" rel="external">
+        <img src="static/images/exp2.png" alt="MY ALT TEXT"/>
+            </a>
+        <h2 class="subtitle has-text-centered">
+          Table 3: Performance on embedding tasks.
+        </h2>
+      </div>
+      <div class="item">
+        <!-- Your image here -->
+        <a href="https://arxiv.org/pdf/2506.11111" target="_blank" rel="external">
+        <img src="static/images/exp3.png" alt="MY ALT TEXT"/>
+         </a>
+        <h2 class="subtitle has-text-centered">
+        Table 4: Ablation experiments result of generative tasks on different model variants.
+       </h2>
+     </div>
+          <div class="item">
+        <!-- Your image here -->
+        <a href="https://arxiv.org/pdf/2506.11111" target="_blank" rel="external">
+        <img src="static/images/exp4.png" alt="MY ALT TEXT"/>
+         </a>
+        <h2 class="subtitle has-text-centered">
+        Table 5: Ablation experiments result of embedding tasks on different model variants.
+       </h2>
+     </div>
+        <div class="item">
+        <!-- Your image here -->
+        <a href="https://arxiv.org/pdf/2506.11111" target="_blank" rel="external">
+        <img src="static/images/exp5.png" alt="MY ALT TEXT"/>
+         </a>
+        <h2 class="subtitle has-text-centered">
+       Figure 2: Similarity heatmaps of the routing distribution across different tasks.
+       </h2>
+     </div>
+        <div class="item">
+        <!-- Your image here -->
+        <a href="https://arxiv.org/pdf/2506.11111" target="_blank" rel="external">
+        <img src="static/images/exp6.png" alt="MY ALT TEXT"/>
+         </a>
+        <h2 class="subtitle has-text-centered">
+       Figure 3: The evolving sample ratio per batch of different tasks during the training. The training step starts from 32 due to the warmup progress of S2Sched.
+       </h2>
+     </div>
+  </div>
+</div>
+</div>
+    </div>
+</section>
+<!-- End image carousel -->
+
+<!--BibTex citation -->
+  <section class="section" id="BibTeX">
+    <div class="container is-max-desktop content">
+      <h2 class="title">BibTeX</h2>
+      <pre><code>BibTex Code Here</code></pre>
+    </div>
+</section>
+<!--End BibTex citation -->
+
+
+  <footer class="footer">
+  <div class="container">
+    <div class="columns is-centered">
+      <div class="column is-8">
+        <div class="content">
+
+          <p>
+            This page was built using the <a href="https://github.com/eliahuhorwitz/Academic-project-page-template" target="_blank">Academic Project Page Template</a> which was adopted from the <a href="https://nerfies.github.io" target="_blank">Nerfies</a> project page.
+            You are free to borrow the source code of this website, we just ask that you link back to this page in the footer. <br> This website is licensed under a <a rel="license"  href="http://creativecommons.org/licenses/by-sa/4.0/" target="_blank">Creative
+            Commons Attribution-ShareAlike 4.0 International License</a>.
+          </p>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!-- Statcounter tracking code -->
+  
+<!-- You can add a tracker to track page visits by creating an account at statcounter.com -->
+
+    <!-- End of Statcounter Code -->
+
+  </body>
+  </html>
