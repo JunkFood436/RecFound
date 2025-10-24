@@ -1,0 +1,539 @@
+\section{Data Construction Details}
+\label{app:data}
+
+\subsection{Prompt Templates}
+
+The following prompts are used for evaluating general-purpose recommendation LLMs on generative tasks in RecFound Datasets.
+For Mistral-7B Instruct-v0.3, the prompt is wrapped with "[INST]".
+For Llama-3-8B-Instruct and Qwen-2.5-Instruct series, the prompt is wrapped with "<im\_start>" and "<im\_end>". 
+We conduct zero-shot evaluations by default, so there's no one-shot or few-shot prompt template.
+
+\vspace{5pt}
+\noindent\textbf{Prompt Template with Options for Generative Tasks}
+\begin{itemize}[leftmargin=10pt]
+    \item System prompt: Below is an instruction that describes a task. Write a response that appropriately completes the request.
+    \item Instruction: \{instruction\}
+        \begin{itemize}[leftmargin=10pt]
+            \item input: \{input\}
+            \item options: \{options\}
+            \item response: 
+        \end{itemize}
+\end{itemize}
+ 
+\vspace{5pt}
+\noindent\textbf{Prompt Template without Options for Generative Tasks}
+\begin{itemize}[leftmargin=10pt]
+    \item System prompt: Below is an instruction that describes a task. Write a response that appropriately completes the request.
+    \item Instruction: \{instruction\}
+        \begin{itemize}[leftmargin=10pt]
+            \item input: \{input\}
+            \item response: 
+        \end{itemize}
+\end{itemize}
+
+To train and evaluate embedding tasks, we need to add special tokens "<|embed|>" as bos token for embedding inputs. An embed EOS is useless as there is no generative loss on it, so it won't be learned. There is also no need to design a prompt template for embedding tasks, we only need to extract embedding vectors from the mean pooling of last-hidden states.
+
+\subsection{Diverse  Instructions}
+For each embedding and generative task, we design several instructions to help LLMs understand various user requests. For each task, we show all the instructions we designed below.
+
+% \begin{longtable}{lp{9cm}}
+% \caption{\textbf{Instructions used for RecFound Generative Datasets.}}
+% \toprule
+% Task Name & Instruction \\
+% \midrule
+% \endfirsthead
+% \endhead
+% \bottomrule
+% \label{tab:geninstruct}
+% \endlastfoot
+
+\vspace{5pt}
+\noindent\textbf{Query Rewriting}
+\begin{itemize}[leftmargin=10pt]
+\item Please undertake the task of rephrasing the questions and responses in a given conversation. You will be given a dialogue between two individuals (I will use A: for the first person and B: for the second person). For each query/response, an indication will be provided in parentheses at the end showing whether it requires rewriting. If no rewriting is needed, simply return the original content; if it does, use the preceding context to modify the sentence appropriately, making its meaning clearer, such as by specifying pronouns, adding place names or times, etc. 
+\item Please carry out a task to rephrase the queries and replies in a given conversation. You will receive a dialogue between two people (I will label the first person as A: and the second person as B:). For each query/reply, I will note in parentheses at the end whether the sentence needs rewriting. If no rewriting is required, simply return the original text; if rewriting is required, use the preceding context to modify the sentence appropriately to make its meaning clearer, such as specifying pronouns, adding locations or times, etc. 
+\item Please accomplish the task of rephrasing the queries and responses in a given conversation. You will be provided with a dialogue between two individuals (I will use A: to refer to the first person and B: to refer to the second person). For each query/response, I will specify in parentheses at the end whether it needs to be rewritten. If no rewriting is needed, return the original content; if rewriting is required, use the previous context to appropriately modify the sentence to make its meaning clearer, such as specifying pronouns, adding place names, or times, etc.
+\item Please perform the task of rephrasing the questions and answers in a given conversation. You will receive a dialogue between two people (denoted as A: for the first person and B: for the second person). For each question/answer, I will indicate at the end in parentheses whether it needs to be rewritten. If no rewriting is necessary, simply return the original content; if rewriting is necessary, use the context to modify the sentence appropriately to make its meaning clearer, such as by specifying pronouns, adding place names, or times, etc. 
+\item Please complete a task of rewriting the queries and replies in a given conversation. You will receive a dialogue between two people (I will use A: to denote the first person and B: to denote the second person). For each query/reply, I will indicate in parentheses at the end whether the sentence needs to be rewritten. If rewriting is not required, you just need to return the original content; if rewriting is required, please use the preceding context to modify the sentence appropriately to make its meaning clearer, such as specifying pronouns, adding place names or times, etc.
+\end{itemize}
+
+\vspace{5pt}
+\noindent\textbf{Attribute Value Extraction}
+\begin{itemize}[leftmargin=10pt]
+\item Given the title, description, feature, price, and brand of a product and a set of target attributes, extract the value of each target attribute from the product information. Output the extracted value and the corresponding source (\eg, title or feature) denoting where the value is extracted.
+\item Extract the value of the target attribute from the given product information and output it along with the corresponding source.
+\item Parse the product information to locate the target attribute, and then provide the extracted value of the target attribute and its source in the output, specifying None if the attribute is not present.
+\item First, identify the target attributes from the provided list. Then, scan the product title, description, feature, and brand to extract the values associated with each target attribute. Finally, create a list of dictionaries, each containing the extracted attribute, its corresponding value, and the source where it was found.
+\item Using the product's title, description, features, price, and brand, identify and retrieve the values associated with a specified set of target attributes. Output the extracted values along with their respective sources (\eg, title or feature) indicating where each value was found. 
+\end{itemize}
+
+\vspace{5pt} \noindent\textbf{Answer Generation}
+\begin{itemize}[leftmargin=10pt]
+\item Given a question and the related document, and generate the answer to the question based on the information provided in the document.
+\item Generate an answer to the question by utilizing the information contained in the document.
+\item Extract information from the supporting document to answer the given question.
+\item Answer the given question using the supporting document.
+\item Answer the given question by extracting information from the supporting document.
+\end{itemize}
+
+\vspace{5pt} \noindent\textbf{User Profile}
+\begin{itemize}[leftmargin=10pt]
+\item Given a [Male/Female] user who is aged 18-24 and in a [student/service staff/.../unknown occupation], this user's movie viewing history over time is listed below. [History Sequence] Analyze user's preferences on movies (consider factors like genre, director/actors, time period/country, character, plot/theme, mood/tone, critical acclaim/award, production quality, and soundtrack). Provide clear explanations based on relevant details from the user's movie viewing history and other pertinent factors.
+\item Given user's book rating history: [List of Bookname: Rating] Analyze user's preferences on books about factors like genre, author, writing style, theme, setting, length and complexity, time period, literary quality, critical acclaim (Provide clear explanations based on relevant details from the user's book viewing history and other pertinent factors.)
+\end{itemize}
+
+\vspace{5pt} \noindent\textbf{Sequential Recommendation}
+\begin{itemize}[leftmargin=10pt]
+\item Given the products the user has purchased in history, rank the items in the listed options and output the item that the user is most likely to purchase next. Answer from one of the options.
+\item Based on the user’s historical purchases, rank the items in options and predict the next product of the user’s interest from the provided options.
+\item Rank the items in options and predict the user's next purchase from the listed options by analyzing her historical purchases.
+\item The user's purchase history implies her preferences. Rank the items in the options based on the user’s preferences. Output the item that the user is most likely to purchase next from the options.
+\item Rank items in listed options based on the user’s purchase history to determine the item that the user is most likely to purchase next. Output the item with the highest likelihood of being the next purchase.
+\end{itemize}
+
+\vspace{5pt} \noindent\textbf{Sentiment Analysis}
+\begin{itemize}[leftmargin=10pt]
+\item Given the user's review, identify the user's sentiment from the listed options. Answer using one of the options.
+\item Assess the user's sentiment in the provided review and select the appropriate sentiment option from the list as the answer.
+\item Determine the sentiment expressed by the user in her review from the provided choices, and respond by selecting one of the available options.
+\item Carefully assess the user's review for any strong expressions of sentiment, either positive or negative. Based on your analysis, select the most fitting sentiment option from the provided list as output.
+\item Analyze the user's review text and determine the overall sentiment expressed, then choose the corresponding sentiment option from the provided list (A: very positive, B: positive, C: neutral, D: negative, E: very negative) based on the identified sentiment.
+\end{itemize}
+
+\vspace{5pt} \noindent\textbf{Answerability Prediction}
+\begin{itemize}[leftmargin=10pt]
+\item Given a question and the related document, predict if the question is answerable based on the information provided in the document. Output only yes or no.
+\item Evaluate the answerability of a question by analyzing the related document, outputting yes if the document contains information addressing the question, and no otherwise.
+\item Analyze a question and its supporting document. Predicting answerability based on the information provided in the document. Output yes if the document contains relevant information to answer the question, otherwise output no.
+\item Given a question and its related document, determine if the question is answerable by analyzing the information in the document. Output yes if the document addresses the question, or no otherwise.
+\item Output yes if the supporting document can answer the given question. Otherwise, output no.
+\end{itemize}
+
+\vspace{5pt} \noindent\textbf{Item Profile}
+\begin{itemize}[leftmargin=10pt]
+\item Introduce movie [Movie name] and describe its attributes (including but not limited to genre, director/cast, country, character, plot/theme, mood/tone, critical acclaim/award, production quality, and soundtrack).
+\item Introduce book [Book name], which is from [Source] Page and describe its attributes including but not limited to genre, author, writing style, theme, setting, length and complexity, time period, literary quality, critical acclaim.
+\end{itemize}
+
+\vspace{5pt} \noindent\textbf{Product Relation Prediction}
+\begin{itemize}[leftmargin=10pt]
+\item Given the title of two products, predict if the two products are similar, if the two products will be purchased or viewed together. Answer only from the options.
+\item Analyze the titles of Product 1 and Product 2 to determine if they are similar, if they will be purchased or viewed together, and choose the corresponding option.
+\item Evaluate the titles of Product 1 and Product 2, then choose the option that best describes the relation between the two products.
+\item Evaluate the titles of Product 1 and Product 2 to assess their similarity and whether they are likely to be purchased or viewed together. Then, select the appropriate option.
+\item Predict whether two products are similar, whether two products are likely to be purchased or viewed together based on their titles. Choose your answer from the provided options.
+\end{itemize}
+
+\vspace{5pt} \noindent\textbf{Product Matching}
+\begin{itemize}[leftmargin=10pt]
+\item Given the title, description, manufacturer, and price of two products, identify if they are the same product. Only output yes or no.
+\item Analyze the title, description, manufacturer, and price between the two products below and generate an output of yes if the two products are the same, otherwise respond with no.
+\item Check the details of the two products to see if they refer to the same product. Output only yes or no.
+\item Based on the product information, predict if the two products are identical or not. Output yes if they are identical or no otherwise.
+\item Compare the details of two given products to determine if they are identical. Output yes if they are identical or no otherwise.
+\end{itemize}
+
+\vspace{5pt} \noindent\textbf{User2Item}
+\begin{itemize}[leftmargin=10pt]
+\item Represent this sequence of user actions to predict the next product he/she will purchase (User sequence is in reverse chronological order):
+\item Encode this user activity sequence to forecast their next product purchase (User sequence is in reverse chronological order):
+\item Create an embedding of this user sequence to determine the next product they will purchase (User sequence is in reverse chronological order):
+\item Generate a representation of this user sequence to find the next product this user will buy (User sequence is in reverse chronological order):
+\item Represent this user sequence to retrieve the next product this user will buy (User sequence is in reverse chronological order):
+\end{itemize}
+
+\vspace{5pt} \noindent\textbf{Query2Item}
+\begin{itemize}[leftmargin=10pt]
+\item Represent this user query to find a matching item:
+\item Generate a representation of this user query to locate a relevant item:
+\item Create an embedding of this user query to retrieve a relevant item:
+\item Use the representation of the user query to identify a relevant item:
+\item Represent this user query to retrieve a relevant item:
+\end{itemize}
+
+\vspace{5pt} \noindent\textbf{Item2Item}
+\begin{itemize}[leftmargin=10pt]
+\item Create an embedding for the product using its title and categories to help find similar items
+\item Generate an embedding for a product based on its title and categories to facilitate the retrieval of similar items
+item Based on the title and categories of a product, generate an embedding to identify similar products
+\item Using the product's title and categories, produce an embedding to retrieve items that are alike
+\item Given the title of a product and its category, please generate an embedding for the product to retrieve similar items
+\end{itemize}
+
+\subsection{Data Examples}
+In this section, we provide an example for each task, with complete instructions (including system prompt and user prompt) and the corresponding ground-truth.
+
+\vspace{5pt} \noindent\textbf{Query Rewriting}
+\begin{itemize}[leftmargin=10pt]
+\item
+\textbf{Instruction:} 
+
+Please perform the task of rephrasing the questions and answers in a given conversation. You will receive a dialogue between two people (denoted as A: for the first person and B: for the second person). For each question/answer, I will indicate at the end in parentheses whether it needs to be rewritten. If no rewriting is necessary, simply return the original content; if rewriting is necessary, use the context to modify the sentence appropriately to make its meaning clearer, such as by specifying pronouns, adding place names, or times, etc. Now the dialogue you need to rewrite is shown below: 
+
+A: Do I have missed calls today? (rewrite required: False)
+
+B: Yes, you have two. It's from Don and Ezra. (rewrite required: True)
+
+A: Call Ezra first. (rewrite required: False)
+
+B: Calling her now. (rewrite required: True)
+
+Based on the given dialogue, your rewritten result is:
+\item
+\textbf{Answer:}
+
+A: Do I have missed calls today?
+
+B: Yes, you have two missed calls today. It's from Don and Ezra.
+
+A: Call Ezra first.
+
+B: Calling Ezra now.
+\end{itemize}
+
+\vspace{5pt} \noindent\textbf{Attribute Value Extraction}
+\begin{itemize}[leftmargin=10pt]
+\item 
+\textbf{Instruction:} 
+
+Below is an instruction that describes a task, paired with an input that provides further context. Write a response that appropriately completes the request.
+
+--Instruction:
+
+Given the title, description, feature, price, and brand of a product and a set of target attributes, extract the value of each target attribute from the product information. Output the extracted value and the corresponding source (\eg, title or feature) denoting where the value is extracted.
+
+--Input:
+
+Product title: Bencore Multi Functional Molle Tactical Messenger Bag.
+
+Product description: This rugged/durable tactical shoulder bag provides perfect and stylish solution for almost any scenario. The bag is made of durable nylon construction that will not tear, color will not fade. The bag has many MOLLE straps through the bag for all your MOLLE accessories. The bag contains many roomy compartments as pictured and comes in many stylish colors. Design, comfort and functionality was the emphasis of this bag which is why we made sure the bag is fully ergonomic, lightweight and has many roomy pockets and Velcro patches throughout the bag. The product comes with the Bencore Life Time warranty and is satisfaction guaranteed. Bencore is a leading manufacturer in outdoor Apparel/Accessories, from Par cords to Backpacks to basic outdoor essentials.
+
+Product feature: Durable heavy-duty, lightweight Nylon construction, will not tear or break even under extreme conditions - Lifetime Warranty, Rugged, roomy main drawstring-closed compartment provides secure storage space for your gear; MOLLE System, works with most MOLLE accessory, Front pocket provides quick access, roomy interior pocket for convenient separated storage, concealed back pocket with zipper closure, Padded and fully ergonomic System, adjustable shoulder strap for comfortable handling.
+
+Product brand: Bencore
+
+Target attributes: Material
+
+--Response:
+
+\item \textbf{Answer:}
+
+Attribute: material; Value: nylon; Source: product description
+
+Attribute: material; Value: nylon; Source: product feature.
+
+\end{itemize}
+
+\vspace{5pt} \noindent\textbf{Answer Generation}
+\begin{itemize}[leftmargin=10pt]
+\item \textbf{Instruction:}
+
+Below is an instruction that describes a task, paired with an input that provides further context. Write a response that appropriately completes the request.
+
+--Instruction:
+
+Generate an answer to the question by utilizing the information contained in the document.
+
+--Input:
+
+Would this be considered a dark metal pan which requires a lower baking temp than shiny pans?" 
+
+Document: 
+
+I've been baking all our bread for several years and needed new pans. These are very nice, a good weight, smooth finish, easy to clean, and the bread bakes perfectly. Would definitely recommend.
+
+Great for baking bread. Bread slides out of Non-stick pan easily. Definitely would recommend this for baking. Sturdy design. I will be purchasing another one soon.", "I kept buying bread pans as my recipes called for an 8 by 4 bread pan. They would arrive and I would measure them and they were never four inches deep. Then I finally realized they were talking about width.
+
+These are good metal pans just as the ad showed. There are not any flaws or other negatives. thanks, Mike", "I needed to purchase an 8x4 loaf pan for baking gluten free bread. It has been wonderful! My family is able to enjoy sandwiches again. The bread releases well and the pans wash easily. I do spray them with cooking spray before baking.
+
+--Response:
+
+\item \textbf{Answer:}
+
+The pan is a dark metal, but I use the same temp as for lighter pans and bake until the top of my bread is golden brown and the crust within the pan seems to be just fine.
+\end{itemize}
+
+\vspace{5pt} \noindent\textbf{User Profile}
+
+\begin{itemize}[leftmargin=10pt]
+\item \textbf{Instruction:}
+
+Below is an instruction that describes a task. Write a response that appropriately completes the request.
+
+--Instructions:
+
+Given a female user who is aged 50-55 and self-employed, this user's movie viewing history over time is listed below. Sabrina (1995), 4 stars; Sabrina (1954), 5 stars; Gone with the Wind (1939), 5 stars; Citizen Kane (1941), 4 stars; You've Got Mail (1998), 3 stars; Thelma \& Louise (1991), 3 stars; American Beauty (1999), 4 stars; Broadway Melody, The (1929), 4 stars; American President, The (1995), 4 stars; Corrina, Corrina (1994), 4 stars; Analyze user's preferences on movies (consider factors like genre, director/actors, time period/country, character, plot/theme, mood/tone, critical acclaim/award, production quality, and soundtrack). Provide clear explanations based on relevant details from the user's movie viewing history and other pertinent factors.
+
+--Response:
+
+\item \textbf{Answer:}
+
+Based on the user's movie viewing history, it seems that she enjoys classic films from the 1930s and 1940s, as well as more recent dramas and romantic comedies. She seems to appreciate films with strong female characters, as evidenced by her ratings of Thelma \& Louise and Sabrina (both versions). 
+
+She also appears to value critical acclaim and award-winning films, as she gave high ratings to Gone with the Wind and Citizen Kane. Additionally, she enjoys films with good production quality, as indicated by her positive rating for The American President.
+
+It is possible that the user has a preference for films with a romantic or sentimental tone, as her ratings for You've Got Mail, Corrina, Corrina, and the two versions of Sabrina are all relatively positive. 
+
+Based on this information, it could be recommended that the user explore classic films from the 1930s and 1940s, as well as critically acclaimed dramas and romantic comedies. She may also enjoy films with strong female characters and a sentimental tone.
+
+
+\end{itemize}
+
+\vspace{5pt} \noindent\textbf{Sequential Recommendation}
+\begin{itemize}[leftmargin=10pt]
+\item \textbf{Instruction:}
+
+Below is an instruction that describes a task, paired with an input that provides further context. Write a response that appropriately completes the request.
+
+--Instruction:
+
+Given the products the user has purchased in history, rank the items in the listed options and output the item that the user is most likely to purchase next. Answer from one of the options.
+
+1st: Wilson Pro feel Tennis Vibration Dampener. Sports \& Outdoors. Sports \& Fitness. Wilson.
+
+2nd: COSMOS 5 PCS White cotton sports basketball headband / sweatband head sweat band/brace. Sports \& Outdoors. Sports \& Fitness. Cosmos.
+
+3rd: Gamma Guard. Sports \& Outdoors. Sports \& Fitness. Gamma.
+
+4th: SummerHouse 1 Gram Per Inch Golf High Density Lead Tape Weight Self-Adhesion for Driver Fairway Hybrid Iron Clubs Head - 1/2''x 100''. Sports \& Outdoors...
+
+--Options:
+
+A: Aceson A7 7Quad Core Google Android 4.4 Tablet PC, IPS Display, 8GB Storage, Bluetooth 4.0, Dual Camera, Support Netflix, Skype, Facebook, YouTube, Google...
+
+B: Pinzon Heather Flannel Blanket, Full/Queen, Blue Heather. Home \& Kitchen. Bedding. Pinzon by Amazon
+
+C: Sony LCS-SC5 Alpha System Carrying Case. Electronics. Camera \& Photo. Sony.
+
+D: Advent Candles Set 4, 10" X 3/4". Home \& Kitchen. Home Dcor. Abbey Gift.
+
+E: Nidec Servo Gentle Typhoon D1225C12B5AP 120mm 1850 rpm Silent Case Fan. Electronics. Computers \& Accessories. SERVO.
+
+F: FYY Case for iPad Air 2 - Premium PU Leather Case Smart Auto Wake/Sleep Cover with Hand Strap, Card Slots, Pocket for iPad Air 2.
+
+--Response:
+
+\item \textbf{Answer:}
+
+C
+
+\end{itemize}
+
+\vspace{5pt}
+\noindent\textbf{Sentiment Analysis}
+\begin{itemize}[leftmargin=10pt]
+\item \textbf{Instruction:}
+
+Below is an instruction that describes a task, paired with an input that provides further context. Write a response that appropriately completes the request.
+
+--Instruction:
+
+Given the user's review, identify the user's sentiment from the listed options. Answer using one of the options.
+
+--Input:
+
+This gives me control of the volume while on a treadmill and I don't have to stop and go back to the stereo or TV while I'm walking.
+
+Options:
+
+A: very positive
+
+B: positive
+
+C: neutral
+
+D: negative
+
+E: very negative
+
+--Response:
+
+\item \textbf{Answer:}
+
+A: very positive
+
+\end{itemize}
+
+\vspace{5pt} \noindent\textbf{Answerability Prediction}
+\begin{itemize}[leftmargin=10pt]
+\item \textbf{Instruction:}
+
+Below is an instruction that describes a task, paired with an input that provides further context. Write a response that appropriately completes the request.
+
+--Instruction:
+
+Given a question and its related document, determine if the question is answerable by analyzing the information in the document. Output yes if the document addresses the question, or no otherwise.
+
+--Input:
+
+question: Is the lamp base weighted well?  Will the lamp tip or lean over if you adjust the light to any angle or extend the arm out to it's maximum capacity?, 
+
+document: 
+This is a wonderful light. It provides exactly the kind of light I need for the close hand work I do. I highly recommend this light!
+
+This is my second lamp of this style and model. i purchased the first one locally for my husband several months ago. I paid almost \$60.00 more for that one. It was so helpful for him, reducing eye strain and thus allowing him to read more, that I decided to try to find another one for myself. I thought I was OK reading with just the regular lamps in our living room until I sat under my husband's Ott Lite. What a difference it made!
+
+I understand it is an investment, but you only have one pair of eyes and the older you get, the harder it is to focus without eye strain and the consequential headaches that can accompany poor lighting. I'm glad I purchased these lamps and highly recommend them to anyone who loves to read.
+
+--Response:
+
+\item \textbf{Answer:}
+
+No
+
+\end{itemize}
+
+\vspace{5pt} \noindent\textbf{Item Profile}
+\begin{itemize}[leftmargin=10pt]
+\item \textbf{Instruction:}
+
+Below is an instruction that describes a task. Write a response that appropriately completes the request.
+
+--Instruction:
+
+Introduce movie Raising Arizona (1987) and describe its attributes (including but not limited to genre, director/cast, country, character, plot/theme, mood/tone, critical acclaim/award, production quality, and soundtrack).
+
+--Response:
+
+\item \textbf{Answer:}
+
+Raising Arizona is a comedy film directed by the Coen brothers and released in 1987. The main cast includes Nicolas Cage, Holly Hunter, and John Goodman. The film was produced in the United States.
+
+The plot of Raising Arizona is centered around a couple, played by Cage and Hunter, who are unable to have children of their own. They decide to kidnap one of a wealthy family's quintuplets, but soon face trouble as the child's biological parents hire a bounty hunter to track them down.
+
+The movie's tone is quirky and absurdist, with elements of slapstick comedy and witty dialogue. The soundtrack features a mix of country music and traditional film score.
+
+Raising Arizona received critical acclaim upon its release and has since become a cult classic. The film's unique blend of humor, character development, and visual style has made it a beloved favorite among fans of the Coen brothers' work. The movie was nominated for several awards, including a Golden Globe for Best Performance by an Actor in a Motion Picture - Musical or Comedy for Nicolas Cage's performance.
+
+\end{itemize}
+
+\vspace{5pt} \noindent\textbf{Product Relation Prediction}
+\begin{itemize}[leftmargin=10pt]
+\item \textbf{Instruction:}
+
+Below is an instruction that describes a task, paired with an input that provides further context. Write a response that appropriately completes the request.
+
+--Instruction:
+
+Given the title of two products, predict if the two products are similar, if the two products will be purchased or viewed together. Answer only from the options.
+
+--Input:
+
+Product 1:: Gamo Whisper Fusion Pro 0.22-Calibre Air Rifle with 3-9x40 Adjustable Objective Scope, 
+
+Product 2:: RWS Model 34 .22 Caliber Pellet Air Rifle Combo
+
+--Options:
+
+A: Users who buy product 1 may also buy product 2.
+
+B: Users who view product 1 may also view product 2.
+
+C: The product 1 is similar with the product 2.
+
+--Response:
+
+\item \textbf{Answer:}
+
+"B"
+\end{itemize}
+
+\vspace{5pt} \noindent\textbf{Product Matching}
+\begin{itemize}[leftmargin=10pt]
+
+\item \textbf{Instruction:}
+
+Below is an instruction that describes a task, paired with an input that provides further context. Write a response that appropriately completes the request.
+
+--Instruction:
+
+Given the title, description, manufacturer, and price of two products, identify if they are the same product. Only output yes or no.
+
+--Input:
+
+"product 1": \{"title": "spycatcher 2007for pc", "description": NaN, "manufacturer": "avanquest", "price": "19.99"\}, 
+
+"product 2": \{"title": "avanquest usa llc spycatcher 2007", "description": "detect and remove spyware spycatcher is the first and only anti-spyware solution that continuously protects consumers from next-generation mutating spyware easily and safely. spycatcher enables even novice pc users to remove and block the most ins", "manufacturer": "nan", "price": "17.5"\}
+
+--Response:
+
+\item \textbf{Answer:}
+
+yes
+
+\end{itemize}
+
+\vspace{5pt} \noindent\textbf{User2Item}
+\begin{itemize}[leftmargin=10pt]
+
+\item \textbf{Query:} 
+
+Generate a representation of this user sequence to find the next product this user will buy (User sequence is in reverse chronological order):
+
+Rawlings Players Series Youth T-Ball Glove, Regular, Basket-Web, 9 Inch
+
+ProsourceFit Flex Foam Rollers
+
+WeeRide Kangaroo Child Bike Seat
+
+FOCO NHL Unisex Team Thematic Gnome
+
+\item \textbf{Positive Sample:} 
+
+Represent this product to match a user sequence:
+
+Start Smart Kids Fun Silicone Swim Cap for Boys and Girls - Sharks \& Minnows.
+
+\item \textbf{Negative Sample:}
+
+Encode this product to fit a user sequence:
+
+Gamo Rocket .177 Cal, 9.6 Grains, Ballistic Tip, 150ct.
+
+\end{itemize}
+
+\vspace{5pt} \noindent\textbf{Query2Item}
+\begin{itemize}[leftmargin=10pt]
+
+\item \textbf{Query:}
+
+Create an embedding of this user query to retrieve a relevant item:
+
+floral napkins baby shower
+
+\item \textbf{Positive Sample:} 
+
+Utilize the product's title to form a representation that corresponds to a user query:
+
+Vintage Floral Paper Napkins for Bridal Shower, Tea Party \& Luncheon (6.5 x 6.5 In, 100 Pack)
+
+\item \textbf{Negative Sample:}
+
+Represent the given product with a title to match a user query:
+
+AIMEILI Nail Dipping Powder Nail Art Powder 6 Colors for Dipping Nail
+\end{itemize}
+
+\vspace{5pt} \noindent\textbf{Item2Item}
+
+\begin{itemize}[leftmargin=10pt]
+
+\item \textbf{Query:}
+
+Using the product's title and categories, produce an embedding to retrieve items that are alike:
+
+title: Terra Men's Pilot, categories: Fashion
+
+\item \textbf{Positive Sample:}
+
+Using the attributes and details of an item, create an embedding to help find similar products:
+
+title: Terra Men's Pilot, categories: Fashion
+
+\item \textbf{Negative Sample:}
+
+Based on an item's details and attributes, produce an embedding to identify similar products:
+
+title: Crew Socks For Men Women Glamour Hot Pink Glitter Cotton Performance Cushion Sport Athletic With Moisture Wicking, categories: Fashion
+
+\end{itemize}
