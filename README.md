@@ -72,6 +72,48 @@ The Dataset is available in `https://huggingface.co/datasets/Anonqwq/RecFound`.
 
 The TMoLE model checkpoint is available in `https://huggingface.co/Anonqwq/RecFound-7B`. You can load the module on Mistral-7B-v0.3-Instruct after getting ready for the environment.
 
+## Implementation Details
+
+- **Backbone LLM**  
+  Mistral-7B-Instruct
+
+- **Hardware**  
+  8 × H100 GPUs
+
+- **Training Configuration**
+  - Epochs: **3**
+  - Dataset: **RecFound**
+  - Batch size:
+    - Embedding tasks: **2048**
+    - Generative tasks: **1024**
+  - Optimizer: **AdamW**
+  - Learning rate: **2e-5**
+
+---
+
+### Task-wise Mixture of Low-rank Experts (TMoLE)
+
+- LoRA applied to Q/K/V/Output projections
+- Rank: **16**
+- Alpha: **64**
+- Dropout: **0.1**
+- Experts per projection: **6**
+  - Embedding experts (**E**): 2
+  - Generative experts (**G**): 2
+  - Shared experts (**S**): 2
+- Task embedding dimension: **512**
+
+---
+
+### Step-wise Convergence-oriented Scheduler (S2Sched)
+
+- Warmup ratio (**Ϛ**): **10%**
+- History window (**L**): **64** steps
+- Temperature (**τ**): **10**
+- Validation sampling:
+  - **128** instances per task
+  - Compute normalized validation loss every step
+
 ## Acknowledgments
 
 Built upon:
